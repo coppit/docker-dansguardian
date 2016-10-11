@@ -11,7 +11,9 @@ RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup \
 # See https://help.ubuntu.com/community/DansGuardian
 RUN set -x \
   && apt-get update -q \
-  && apt-get install -qy dansguardian squid
+  && apt-get install -qy dansguardian squid \
+  && apt-get install -qy clamav \
+  && freshclam
 
 RUN set -x \
   && apt-get autoremove -y \
@@ -19,6 +21,7 @@ RUN set -x \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN sed -i "/^UNCONFIGURED/ d" /etc/dansguardian/dansguardian.conf
+RUN echo "contentscanner = '/etc/dansguardian/contentscanners/clamav.conf'" /etc/dansguardian/dansguardian.conf
 RUN echo 'always_direct allow all' >> /etc/squid3/squid.conf
 
 # Create dir to keep things tidy
