@@ -20,8 +20,9 @@ RUN set -x \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN sed -i "/^UNCONFIGURED/ d" /etc/dansguardian/dansguardian.conf
-RUN echo "contentscanner = '/etc/dansguardian/contentscanners/clamav.conf'" >> /etc/dansguardian/dansguardian.conf
+COPY dansguardian.conf /etc/dansguardian/dansguardian.conf
+COPY template.html /etc/dansguardian/languages/ukenglish/template.html
+COPY dansguardianf1.conf  /etc/dansguardian/dansguardianf1.conf
 RUN echo 'always_direct allow all' >> /etc/squid3/squid.conf
 
 # Create dir to keep things tidy
