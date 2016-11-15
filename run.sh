@@ -23,7 +23,7 @@ echo "$(ts) Starting DansGuardian container..."
 
 rm -rf /etc/dansguardian/lists
 ln -s /config/lists /etc/dansguardian/lists
-
+crontab -l | { cat; echo "0 * * * * freshclam"; } | crontab -
 squid3 start
 service dansguardian start
 
